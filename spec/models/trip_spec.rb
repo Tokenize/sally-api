@@ -6,15 +6,15 @@ describe Trip do
   end
 
   it "is invalid without an associated user" do
-    expect(build(:trip, user: nil)).to be_invalid
+    expect(build(:trip, user: nil)).to have(1).errors_on(:user_id)
   end
 
   it "is invalid without a name" do
-    expect(build(:trip, name: nil)).to be_invalid
+    expect(build(:trip, name: nil)).to have(1).errors_on(:name)
   end
 
   it "is invalid without a start_at timestamp" do
-    expect(build(:trip, start_at: nil)).to be_invalid
+    expect(build(:trip, start_at: nil)).to have(1).errors_on(:start_at)
   end
 
   it "is valid with an empty description" do
