@@ -1,11 +1,10 @@
-# Read about factories at https://github.com/thoughtbot/factory_girl
-
+require 'faker'
 FactoryGirl.define do
   factory :trip do
-    name "MyString"
-    description "MyText"
-    start_at "2013-06-13 21:18:10"
-    end_at "2013-06-13 21:18:10"
-    user nil
+    name { Faker::Lorem.words }
+    description { Faker::Lorem.paragraph }
+    start_at { Time.now }
+    end_at { Time.at(Time.now + rand(10000)) }
+    association :user
   end
 end
