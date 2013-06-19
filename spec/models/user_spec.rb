@@ -6,6 +6,11 @@ describe User do
     expect(create(:user)).to be_valid
   end
 
+  it "has an authentication token when created" do
+    user = create(:user)
+    expect(user.authentication_token).not_to eq(nil)
+  end
+
   describe "validations" do
     it "is invalid without a first_name" do
       expect(build(:user, first_name: nil)).to have(1).errors_on(:first_name)
