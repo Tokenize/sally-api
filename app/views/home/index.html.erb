@@ -1,0 +1,11 @@
+<h1>welcome to sally-api.</h1>
+<p>sally-api is a simple REST API for logging periodic location updates.</p>
+
+<% if user_signed_in? %>
+  <p>
+    <%= link_to "edit profile", edit_user_registration_path %> | 
+    <%= link_to "sign out", destroy_user_session_path, method: :delete %>
+  </p>
+<% else %>
+  <p><%= link_to "sign in", new_user_session_path %></p>
+<% end %>
