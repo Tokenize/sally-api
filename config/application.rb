@@ -75,5 +75,8 @@ module SallyApi
         request_specs: false
       g.fixture_replacement :factory_girl, dir: "spec/factories"
     end
+
+    config.paths.add "app/api", glob: "**/*.rb"
+    config.autoload_paths += Dir["#{Rails.root}/app/api/*"]
   end
 end

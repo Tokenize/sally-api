@@ -61,4 +61,5 @@ SallyApi::Application.routes.draw do
   # match ':controller(/:action(/:id))(.:format)'
 
   root :to => 'home#index'
+  mount API => "/"
 end
