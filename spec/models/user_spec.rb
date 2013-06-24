@@ -11,6 +11,12 @@ describe User do
     expect(user.authentication_token).not_to eq(nil)
   end
 
+  it "can be found from an authentication token" do
+    user = create(:user)
+    user2 = User.find_for_authentication_token(auth_token: user.authentication_token)
+    expect(user2).to eq(user)
+  end
+
   describe "validations" do
     it "is invalid without a first_name" do
       expect(build(:user, first_name: nil)).to have(1).errors_on(:first_name)
