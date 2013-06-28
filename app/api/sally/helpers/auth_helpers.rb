@@ -8,7 +8,7 @@ module AuthHelpers
   end
 
   def current_user
-    warden.user || User.find_by_authentication_token(params[:auth_token]) 
+    warden.user || User.where(authentication_token: params[:auth_token])
   end
 
   def authenticated
