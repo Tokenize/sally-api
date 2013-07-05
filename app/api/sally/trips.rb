@@ -6,7 +6,7 @@ module Sally
     desc "Returns all trips."
     get :trips do
       authenticated_user
-      current_user.trips.all
+      current_user.trips.to_a
     end
   end
 end
