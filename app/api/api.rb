@@ -3,4 +3,5 @@ class API < Grape::API
   format :json
 
   mount Sally::Trips
+  mount Sally::Users
 end
