@@ -4,4 +4,5 @@ class API < Grape::API
 
   mount Sally::Trips
   mount Sally::Users
+  mount Sally::Locations
 end
