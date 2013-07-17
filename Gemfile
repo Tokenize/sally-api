@@ -15,6 +15,7 @@ end
 group :development, :test do
   gem 'rspec-rails', '~> 2.13.2'
   gem 'factory_girl_rails', '~> 4.2.1'
+  gem 'capybara', '~> 2.1.0'
 end
 
 group :test do
