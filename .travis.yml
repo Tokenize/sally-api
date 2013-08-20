@@ -5,5 +5,5 @@ rvm:
 services: postgresql
 before_script:
   - psql -c 'create database sallyapi_test;' -U postgres
-  - cp config/database.example.yml config/database.yml
+  - cp config/database.yml.example config/database.yml
 script: bundle exec rspec spec
