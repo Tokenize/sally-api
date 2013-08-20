@@ -32,6 +32,40 @@ describe 'Sally::Trips' do
       end
 
     end
+
+    describe 'POST trips' do
+      context "success" do
+        let(:attrs) { build(:trip).attributes }
+
+        it "creates a new trip" do
+          expect do
+            post "api/trips", { auth_token: @token }.merge(attrs)
+          end.to change(Trip, :count).by(1)
+        end
+
+        it "should return the id of the newly created trip" do
+          post "api/trips", { auth_token: @token }.merge(attrs)
+          body = JSON.parse(response.body)
+          expect(body['id']).to_not be_blank
+        end
+      end
+
+      context "failure" do
+        let(:attrs) { build(:trip).attributes.reject { |k, v| k == 'name' } }
+
+        it "should not create a new trip" do
+          expect do
+            post "api/trips", { auth_token: @token }.merge(attrs)
+          end.to_not change(Trip, :count)
+        end
+
+        it "should populate the 'error' element" do
+          post "api/trips", { auth_token: @token }.merge(attrs)
+          body = JSON.parse(response.body)
+          expect(body['error']).to_not be_blank
+        end
+      end
+    end
   end
 
   context "unauthenticated user" do
