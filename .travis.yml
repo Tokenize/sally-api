@@ -1,0 +1,9 @@
+language: ruby
+rvm:
+  - 2.0.0
+  - 1.9.3
+services: postgres
+before_script:
+  - psql -c 'create database sally-api_test;' -U postgres
+  - cp config/database.example.yml config/database.yml
+script: bundle exec rspec spec
