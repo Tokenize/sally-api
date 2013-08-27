@@ -7,13 +7,17 @@ module Sally
       authenticated_user
     end
 
-    desc "Return a trip's locations"
-    params do
-      requires :trip_id, type: Integer, desc: "Trip id."
+    resource :trips do
+
+      desc "Return a trip's locations"
+      params do
+        requires :trip_id, type: Integer, desc: "Trip id."
+      end
+      get ":trip_id/locations" do
+        trip = current_user.trips.where(id: params[:trip_id]).first
+        trip.locations
+      end
     end
-    get "trips/:trip_id/locations" do
-      trip = current_user.trips.where(id: params[:trip_id]).first
-      trip.locations
-    end
+
   end
 end
