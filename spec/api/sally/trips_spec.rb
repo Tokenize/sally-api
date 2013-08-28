@@ -48,6 +48,12 @@ describe 'Sally::Trips' do
           body = JSON.parse(response.body)
           expect(body['id']).to_not be_blank
         end
+
+        it "should associate the trip with the current user" do
+          post "api/trips", { auth_token: @token }.merge(attrs)
+          body = JSON.parse(response.body)
+          expect(body['user_id']).to eq(@user.id)
+        end
       end
 
       context "failure" do
