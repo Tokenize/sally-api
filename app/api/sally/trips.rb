@@ -22,7 +22,7 @@ module Sally
         requires :id, type: Integer, desc: "Trip id."
       end
       get ":id" do
-        current_user.trips.where(id: params[:id]).first
+        current_user.trips.where(id: trip_params[:id]).first
       end
 
       desc "Creates a trip."
