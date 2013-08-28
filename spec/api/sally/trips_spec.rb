@@ -66,6 +66,52 @@ describe 'Sally::Trips' do
         end
       end
     end
+
+    describe 'DELETE trips/:id' do
+
+      context "success" do
+        before(:each) { @trip = create(:trip, user: @user) }
+
+        it "should decrement the number of trips by 1" do
+          expect do
+            delete "api/trips/#{@trip.id}", { auth_token: @token }
+          end.to change(Trip, :count).by(-1)
+        end
+
+        it "should return the deleted trip" do
+          delete "api/trips/#{@trip.id}", { auth_token: @token }
+          body = JSON.parse(response.body)
+          expect(body['id']).to eq(@trip.id)
+        end
+      end
+
+      context "failure" do
+        before(:each) { @trip = create(:trip, user: @user) }
+
+        it "should not change the number of trips" do
+          expect do
+            delete "api/trips/#{@trip.id + 1}", { auth_token: @token }
+          end.to_not change(Trip, :count)
+        end
+
+        it "should return an error when attempting to delete a non-existant trip" do
+          delete "api/trips/#{@trip.id + 1}", { auth_token: @token }
+          body = JSON.parse(response.body)
+          expect(body['error']).to_not be_blank
+        end
+
+        it "should not delete another user's trips" do
+          trip2 = create(:trip)
+
+          expect do
+            delete "api/trips/#{trip2.id}", { auth_token: @token }
+          end.to_not change(Trip, :count)
+
+          body = JSON.parse(response.body)
+          expect(body['error']).to_not be_blank
+        end
+      end
+    end
   end
 
   context "unauthenticated user" do

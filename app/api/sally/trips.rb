@@ -6,6 +6,8 @@ module Sally
     helpers AuthHelpers
     helpers ParamHelpers
 
+    rescue_from ActiveRecord::RecordNotFound
+
     before do
       authenticated_user
     end
@@ -32,6 +34,14 @@ module Sally
       end
       post do
         current_user.trips.create!(trip_params)
+      end
+
+      desc "Delete a trip."
+      params do
+        requires :id, type: String, desc: "Trip ID."
+      end
+      delete ":id" do
+        current_user.trips.find(trip_params[:id]).destroy
       end
     end
 
