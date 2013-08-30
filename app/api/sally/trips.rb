@@ -36,6 +36,27 @@ module Sally
         current_user.trips.create!(trip_params)
       end
 
+      desc "Update a trip."
+      params do
+        requires :id, type: String, desc: "Trip ID."
+        optional :name, type: String, desc: "Trip's name."
+        optional :description, type: String, desc: "Trip's description."
+        optional :start_at, type: Time, desc: "Trip's start time."
+        optional :end_at, type: Time, desc: "Trip's end time."
+      end
+      put ":id" do
+        trip = current_user.trips.find(trip_params[:id])
+
+        trip.name = trip_params[:name] unless trip_params[:name].blank?
+        trip.description = trip_params[:description] unless trip_params[:description].blank?
+        trip.start_at = trip_params[:start_at] unless trip_params[:start_at].blank?
+        trip.end_at = trip_params[:end_at] unless trip_params[:end_at].blank?
+
+        trip.save!
+
+        trip
+      end
+
       desc "Delete a trip."
       params do
         requires :id, type: String, desc: "Trip ID."

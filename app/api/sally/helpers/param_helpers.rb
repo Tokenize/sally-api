@@ -4,6 +4,6 @@ module ParamHelpers
   end
 
   def trip_params
-    clean_params.permit(:name, :description, :start_at, :end_at).presence || params
+    clean_params.permit(:id, :name, :description, :start_at, :end_at).presence || params
   end
 end

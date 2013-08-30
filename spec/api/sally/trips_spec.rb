@@ -73,6 +73,49 @@ describe 'Sally::Trips' do
       end
     end
 
+    describe 'PUT trips/:id' do
+
+      before(:each) do
+        @trip = create(:trip, user: @user)
+      end
+
+      context "success" do
+        let(:attrs) {  {name: 'Training day #1', description: 'I will attempt a 10 KM run!' } }
+
+        it "should be successful given valid parameters" do
+          put "api/trips/#{@trip.id}", { auth_token: @token }.merge(attrs)
+          expect(response).to be_success
+        end
+
+        it "should update the trip's name and description" do
+          put "api/trips/#{@trip.id}", { auth_token: @token }.merge(attrs)
+
+          @trip.reload
+
+          expect(@trip.name).to eq(attrs[:name])
+          expect(@trip.description).to eq(attrs[:description])
+        end
+      end
+
+      context "failure" do
+        let(:attrs) { { name: 'Updated!', end_at: 'Invalid value!' } }
+
+        it "should not be successful" do
+          put "api/trips/#{@trip.id}", { auth_token: @token }.merge(attrs)
+          expect(response).to_not be_success
+        end
+
+        it "should not update the attributes" do
+          put "api/trips/#{@trip.id}", { auth_token: @token }.merge(attrs)
+
+          @trip.reload
+
+          expect(@trip.name).to_not eq(attrs[:name])
+          expect(@trip.end_at).to_not eq(attrs[:end_at])
+        end
+      end
+    end
+
     describe 'DELETE trips/:id' do
 
       context "success" do
