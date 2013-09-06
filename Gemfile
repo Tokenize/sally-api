@@ -37,7 +37,7 @@ gem 'uglifier', '>= 1.3.0'
 # gem 'unicorn'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano'
 
 # To use debugger
 # gem 'debugger'
