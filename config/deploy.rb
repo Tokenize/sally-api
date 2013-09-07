@@ -3,7 +3,7 @@ require "bundler/capistrano"
 set :application, "sally-api"
 
 set :scm, :git
-set :repository,  "git@github.com:tokenize/#{application}.git"
+set :repository,  "git@github.com:Tokenize/#{application}.git"
 set :branch, "master"
 
 set :user, "deployer"
