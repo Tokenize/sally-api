@@ -6,6 +6,8 @@ module Sally
     helpers AuthHelpers
     helpers ParamHelpers
 
+    rescue_from ActiveRecord::RecordNotFound
+
     before do
       authenticated_user
     end
@@ -20,7 +22,7 @@ module Sally
         trip = current_user.trips.where(id: params[:trip_id]).first
         trip.locations
       end
-      
+
       desc "Creates a location"
       params do
         requires :time, type: Time, desc: "Timestamp as seconds since Epoch."
@@ -28,13 +30,17 @@ module Sally
         requires :longitude, type: Float, desc: "Longitude value."
       end
       post ":trip_id/locations" do
-        trip = current_user.trips.where(id: params[:trip_id]).first
-        
-        if trip.nil?
-          error!('Invalid trip_id.', 400)
-        else
-          trip.locations.create!(location_params)
-        end
+        trip = current_user.trips.find(params[:trip_id])
+        trip.locations.create!(location_params)
+      end
+
+      desc "Deletes a location"
+      params do
+        requires :id, type: Integer, desc: "Location id."
+      end
+      delete ":trip_id/locations/:id" do
+        trip = current_user.trips.find(params[:trip_id])
+        trip.locations.find(location_params[:id]).destroy
       end
     end
 

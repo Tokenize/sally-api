@@ -45,12 +45,62 @@ describe 'Sally::Locations' do
       context "failure" do
         let(:attrs) { build(:location).attributes }
 
-        it "responds with a bad request (400) status given a bad trip_id" do
+        it "responds with a bad request (403) status given a bad trip_id" do
           post "api/trips/-1/locations", { auth_token: @token }.merge(attrs)
-          expect(response.response_code).to eq 400
+          expect(response.response_code).to eq 403
         end
       end
     end
+
+    describe "DELETE trip/:trip_id/locations/:id" do
+      context "success" do
+
+        before :each do
+          @new_location = create(:location, trip: @trip)
+        end
+
+        it "decrements the number of locations by 1" do
+          expect do
+            delete "api/trips/#{@trip.id}/locations/#{@new_location.id}", { auth_token: @token }
+          end.to change(Location, :count).by(-1)
+        end
+
+        it "returns the deleted location" do
+          delete "api/trips/#{@trip.id}/locations/#{@new_location.id}", { auth_token: @token }
+          body = JSON.parse(response.body)
+          expect(body['id']).to eq(@new_location.id)
+        end
+      end
+
+      context "failure" do
+        before :each do
+          @new_location = create(:location, trip: @trip)
+        end
+
+        it "does not change the number of locations" do
+          expect do
+            delete "api/trips/#{@trip.id}/locations/#{@new_location.id + 1}", { auth_token: @token }
+          end.to_not change(Location, :count)
+        end
+
+        it "returns an error when attempting to delete a non-existant location" do
+          delete "api/trips/#{@trip.id}/locations/#{@new_location.id + 1}", { auth_token: @token }
+          expect(response.response_code).to eq(403)
+        end
+
+        it "does not delete another user's locations" do
+          trip = create(:trip)
+          location = create(:location, trip: trip)
+
+          expect do
+            delete "api/trips/#{@trip.id}/locations/#{location.id}", { auth_token: @token }
+          end.to_not change(Location, :count)
+
+          expect(response.response_code).to eq(403)
+        end
+      end
+    end
+
   end
 
   context "unauthenticated user" do
