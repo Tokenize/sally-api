@@ -52,6 +52,47 @@ describe 'Sally::Locations' do
       end
     end
 
+    describe "PUT trip/:trip_id/locations/:id" do
+
+      before(:each) do
+        @location2 = create(:location, trip: @trip)
+      end
+
+      context "success" do
+        let(:attrs) { { latitude: (@location2.latitude + 1) } }
+
+        it "is successful when given valid parameters" do
+          put "api/trips/#{@trip.id}/locations/#{@location2.id}", { auth_token: @token }.merge(attrs)
+          expect(response).to be_success
+        end
+
+        it "updates the location's latitude" do
+          put "api/trips/#{@trip.id}/locations/#{@location2.id}", { auth_token: @token }.merge(attrs)
+
+          @location2.reload
+          expect(@location2.latitude).to be_within(0.01).of(attrs[:latitude])
+        end
+      end
+
+      context "failure" do
+        let(:attrs) { { latitude: 'north pole' } }
+
+        it "is not successful" do
+          put "api/trips/#{@trip.id}/locations/#{@location2.id}",
+            { auth_token: @token }.merge(attrs)
+          expect(response).to_not be_success
+        end
+
+        it "does not update the location's attributes" do
+          put "api/trips/#{@trip.id}/locations/#{@location2.id}",
+            { auth_token: @token }.merge(attrs)
+          @location2.reload
+
+          expect(@location2.latitude).to_not eq(attrs[:latitude])
+        end
+      end
+    end
+
     describe "DELETE trip/:trip_id/locations/:id" do
       context "success" do
 

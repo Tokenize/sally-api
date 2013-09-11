@@ -8,6 +8,6 @@ module ParamHelpers
   end
   
   def location_params
-    clean_params.permit(:time, :latitude, :longitude, :direction, :speed).presence || params
+    clean_params.permit(:id, :time, :latitude, :longitude, :direction, :speed).presence || params
   end
 end
