@@ -21,10 +21,11 @@
   </head>
 
   <body>
-
-    <%= yield %>
-
-    
+    <div id="content">
+      <div class="content-wrapper">
+        <%= yield %>
+      </div>
+    </div>
     <%= javascript_include_tag "application" %>
   </body>
 </html>

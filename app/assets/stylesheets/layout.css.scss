@@ -1,0 +1,7 @@
+div#content {
+  @include grid-row;
+
+  div.content-wrapper {
+    @include grid-column(6, false, true);
+  }
+}
