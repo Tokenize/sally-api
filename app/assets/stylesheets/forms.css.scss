@@ -1,0 +1,9 @@
+input[type=submit] {
+  @include button;
+}
+
+form.danger {
+  input[type=submit] {
+    @include button(false, $alert-color);
+  }
+}
