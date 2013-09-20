@@ -40,7 +40,7 @@ gem 'zurb-foundation', '~> 4.3.1'
 gem 'unicorn'
 
 # Deploy with Capistrano
-gem 'capistrano'
+gem 'capistrano', '~> 2.15.1'
 
 # To use debugger
 # gem 'debugger'
