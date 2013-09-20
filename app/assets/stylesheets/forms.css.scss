@@ -7,3 +7,15 @@ form.danger {
     @include button(false, $alert-color);
   }
 }
+
+div.inline-group {
+  @include grid-row(collapse);
+
+  div.form-label {
+    @include grid-column($columns: 11, $collapse: true);
+  }
+
+  div.form-element {
+    @include grid-column($columns: 1, $collapse: true);
+  }
+}
