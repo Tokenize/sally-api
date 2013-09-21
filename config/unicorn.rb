@@ -7,4 +7,4 @@ stdout_path "#{root}/log/unicorn.log"
 listen "/tmp/unicorn.sally-api.sock"
 worker_processes 2
 timeout 30
-preload_app true
+preload_app false
