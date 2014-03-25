@@ -17,22 +17,31 @@ describe 'Sally::Trips' do
     end
 
     describe 'GET trips' do
-      it "returns the users trips" do
+      it "should have a 'trips' root node" do
         get 'api/trips', { auth_token: @token }
         body = JSON.parse(response.body)
         expect(body['trips']).to_not be_empty
+      end
+
+      it "returns the users trips" do
+        get 'api/trips', { auth_token: @token }
+        body = JSON.parse(response.body)
         expect(body['trips'].count).to eq 2
       end
     end
 
     describe 'GET trips/:id' do
-      it "returns a specific trip when given a trip id" do
+      it "should have a 'trip' root node" do
         get "api/trips/#{@trip1.id}", { auth_token: @token }
         body = JSON.parse(response.body)
         expect(body['trip']).to_not be_blank
-        expect(body['trip']['id']).to eq @trip1.id
       end
 
+      it "returns a specific trip when given a trip id" do
+        get "api/trips/#{@trip1.id}", { auth_token: @token }
+        body = JSON.parse(response.body)
+        expect(body['trip']['id']).to eq @trip1.id
+      end
     end
 
     describe 'POST trips' do
