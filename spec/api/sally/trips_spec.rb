@@ -20,7 +20,8 @@ describe 'Sally::Trips' do
       it "returns the users trips" do
         get 'api/trips', { auth_token: @token }
         body = JSON.parse(response.body)
-        expect(body.count).to eq 2
+        expect(body['trips']).to_not be_empty
+        expect(body['trips'].count).to eq 2
       end
     end
 
@@ -28,7 +29,8 @@ describe 'Sally::Trips' do
       it "returns a specific trip when given a trip id" do
         get "api/trips/#{@trip1.id}", { auth_token: @token }
         body = JSON.parse(response.body)
-        expect(body['id']).to eq @trip1.id
+        expect(body['trip']).to_not be_blank
+        expect(body['trip']['id']).to eq @trip1.id
       end
 
     end
@@ -43,16 +45,22 @@ describe 'Sally::Trips' do
           end.to change(Trip, :count).by(1)
         end
 
+        it "should have a 'trip' root node" do
+          post "api/trips", { auth_token: @token }.merge(attrs)
+          body = JSON.parse(response.body)
+          expect(body['trip']).to_not be_blank
+        end
+
         it "should return the id of the newly created trip" do
           post "api/trips", { auth_token: @token }.merge(attrs)
           body = JSON.parse(response.body)
-          expect(body['id']).to_not be_blank
+          expect(body['trip']['id']).to_not be_blank
         end
 
         it "should associate the trip with the current user" do
           post "api/trips", { auth_token: @token }.merge(attrs)
           body = JSON.parse(response.body)
-          expect(body['user_id']).to eq(@user.id)
+          expect(body['trip']['user_id']).to eq(@user.id)
         end
       end
 
@@ -85,6 +93,12 @@ describe 'Sally::Trips' do
         it "should be successful given valid parameters" do
           put "api/trips/#{@trip.id}", { auth_token: @token }.merge(attrs)
           expect(response).to be_success
+        end
+
+        it "should have a 'trip' root node" do
+          put "api/trips/#{@trip.id}", { auth_token: @token }.merge(attrs)
+          body = JSON.parse(response.body)
+          expect(body['trip']).to_not be_blank
         end
 
         it "should update the trip's name and description" do
@@ -127,10 +141,16 @@ describe 'Sally::Trips' do
           end.to change(Trip, :count).by(-1)
         end
 
+        it "should have a 'trip' root node" do
+          delete "api/trips/#{@trip.id}", { auth_token: @token }
+          body = JSON.parse(response.body)
+          expect(body['trip']).to_not be_blank
+        end
+
         it "should return the deleted trip" do
           delete "api/trips/#{@trip.id}", { auth_token: @token }
           body = JSON.parse(response.body)
-          expect(body['id']).to eq(@trip.id)
+          expect(body['trip']['id']).to eq(@trip.id)
         end
       end
 
@@ -167,7 +187,7 @@ describe 'Sally::Trips' do
     it "responds with an 'unauthorized (401)' status" do
       get 'api/trips'
       expect(response.response_code).to eq 401
-    end 
+    end
   end
 end
 

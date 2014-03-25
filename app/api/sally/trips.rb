@@ -16,7 +16,7 @@ module Sally
 
       desc "Returns all trips."
       get do
-        current_user.trips.to_a
+        { trips: current_user.trips.to_a }
       end
 
       desc "Return a trip."
@@ -24,7 +24,7 @@ module Sally
         requires :id, type: Integer, desc: "Trip id."
       end
       get ":id" do
-        current_user.trips.where(id: trip_params[:id]).first
+        { trip: current_user.trips.where(id: trip_params[:id]).first }
       end
 
       desc "Creates a trip."
@@ -33,7 +33,7 @@ module Sally
         requires :start_at, type: Time, desc: "Trip start time"
       end
       post do
-        current_user.trips.create!(trip_params)
+        { trip: current_user.trips.create!(trip_params) }
       end
 
       desc "Update a trip."
@@ -54,7 +54,7 @@ module Sally
 
         trip.save!
 
-        trip
+        { trip: trip }
       end
 
       desc "Delete a trip."
@@ -62,7 +62,7 @@ module Sally
         requires :id, type: String, desc: "Trip ID."
       end
       delete ":id" do
-        current_user.trips.find(trip_params[:id]).destroy
+        { trip: current_user.trips.find(trip_params[:id]).destroy }
       end
     end
 
