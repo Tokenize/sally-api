@@ -17,10 +17,16 @@ describe 'Sally::Locations' do
         expect(response.response_code).to eq 200
       end
 
+      it "should have a 'locations' root node" do
+        get "api/trips/#{@trip.id}/locations", { auth_token: @token }
+        body = JSON.parse(response.body)
+        expect(body['locations']).to_not be_empty
+      end
+
       it "returns all of the trip's locations" do
         get "api/trips/#{@trip.id}/locations", { auth_token: @token }
         body = JSON.parse(response.body)
-        expect(body.count).to eq 1
+        expect(body['locations'].count).to eq 1
       end
     end
 
@@ -35,10 +41,16 @@ describe 'Sally::Locations' do
           end.to change(Location, :count).by(1)
         end
 
+        it "should have a 'location' root node" do
+          post "api/trips/#{@trip.id}/locations", { auth_token: @token }.merge(attrs)
+          body = JSON.parse(response.body)
+          expect(body['location']).to_not be_blank
+        end
+
         it "returns the id of the newly created location" do
           post "api/trips/#{@trip.id}/locations", { auth_token: @token }.merge(attrs)
           body = JSON.parse(response.body)
-          expect(body['id']).to_not be_blank
+          expect(body['location']['id']).to_not be_blank
         end
       end
 
@@ -64,6 +76,12 @@ describe 'Sally::Locations' do
         it "is successful when given valid parameters" do
           put "api/trips/#{@trip.id}/locations/#{@location2.id}", { auth_token: @token }.merge(attrs)
           expect(response).to be_success
+        end
+
+        it "should have a 'location' root node" do
+          put "api/trips/#{@trip.id}/locations/#{@location2.id}", { auth_token: @token }.merge(attrs)
+          body = JSON.parse(response.body)
+          expect(body['location']).to_not be_blank
         end
 
         it "updates the location's latitude" do
@@ -106,10 +124,16 @@ describe 'Sally::Locations' do
           end.to change(Location, :count).by(-1)
         end
 
+        it "should have a 'location' root node" do
+          delete "api/trips/#{@trip.id}/locations/#{@new_location.id}", { auth_token: @token }
+          body = JSON.parse(response.body)
+          expect(body['location']).to_not be_blank
+        end
+
         it "returns the deleted location" do
           delete "api/trips/#{@trip.id}/locations/#{@new_location.id}", { auth_token: @token }
           body = JSON.parse(response.body)
-          expect(body['id']).to eq(@new_location.id)
+          expect(body['location']['id']).to eq(@new_location.id)
         end
       end
 

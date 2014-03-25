@@ -20,7 +20,7 @@ module Sally
       end
       get ":trip_id/locations" do
         trip = current_user.trips.where(id: params[:trip_id]).first
-        trip.locations
+        { locations: trip.locations }
       end
 
       desc "Creates a location"
@@ -31,7 +31,7 @@ module Sally
       end
       post ":trip_id/locations" do
         trip = current_user.trips.find(params[:trip_id])
-        trip.locations.create!(location_params)
+        { location: trip.locations.create!(location_params) }
       end
 
       desc "Update a location"
@@ -52,7 +52,7 @@ module Sally
         location.speed = location_params[:speed] unless location_params[:speed].blank?
 
         location.save!
-        location
+        { location: location }
       end
 
       desc "Deletes a location"
@@ -61,7 +61,7 @@ module Sally
       end
       delete ":trip_id/locations/:id" do
         trip = current_user.trips.find(params[:trip_id])
-        trip.locations.find(location_params[:id]).destroy
+        { location: trip.locations.find(location_params[:id]).destroy }
       end
     end
 
