@@ -28,6 +28,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'therubyracer', :platforms => :ruby
 gem 'foundation-rails', '~> 5.0.2'
+gem 'exception_notification'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

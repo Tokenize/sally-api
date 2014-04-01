@@ -62,4 +62,24 @@ SallyApi::Application.configure do
   config.active_support.deprecation = :notify
 
   config.eager_load = true
+
+  ActionMailer::Base.delivery_method = :smtp
+
+  ActionMailer::Base.smtp_settings = {
+    :address => "smtp.sendgrid.net",
+    :port => 587,
+    :domain => "tokenize.ca",
+    :authentication => :login,
+    :user_name => ENV['SALLY_SENDGRID_USERNAME'],
+    :password => ENV['SALLY_SENDGRID_PASSWORD'],
+    :enable_starttls_auto => true
+  }
+
+  SallyApi::Application.config.middleware.use ExceptionNotification::Rack,
+    :email => {
+      :email_prefix => "[Sally API] ",
+      :sender_address => %{"notifier" <notifier@tokenize.ca>},
+      :exception_recipients => %w{zaid@tokenize.ca mike@tokenize.ca}
+    }
+
 end
