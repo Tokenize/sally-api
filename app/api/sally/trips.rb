@@ -33,7 +33,7 @@ module Sally
         requires :start_at, type: Time, desc: "Trip start time"
       end
       post do
-        current_user.trips.create!(trip_params)
+        current_user.trips.create!(new_trip_params)
       end
 
       desc "Update a trip."

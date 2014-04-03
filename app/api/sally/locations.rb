@@ -31,7 +31,7 @@ module Sally
       end
       post ":trip_id/locations" do
         trip = current_user.trips.find(params[:trip_id])
-        trip.locations.create!(location_params)
+        trip.locations.create!(new_location_params)
       end
 
       desc "Update a location"
