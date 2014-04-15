@@ -6,7 +6,10 @@ module Sally
     helpers AuthHelpers
     helpers ParamHelpers
 
-    rescue_from ActiveRecord::RecordNotFound
+    rescue_from :all
+    rescue_from ActiveRecord::RecordNotFound do |e|
+      Rack::Response.new({ error: "Trip not found." }.to_json, 404).finish
+    end
 
     before do
       authenticated_user
@@ -24,7 +27,7 @@ module Sally
         requires :id, type: Integer, desc: "Trip id."
       end
       get ":id" do
-        current_user.trips.where(id: trip_params[:id]).first
+        current_user.trips.where(id: trip_params[:id]).first!
       end
 
       desc "Creates a trip."

@@ -45,9 +45,9 @@ describe 'Sally::Locations' do
       context "failure" do
         let(:attrs) { build(:location).attributes }
 
-        it "responds with a bad request (403) status given a bad trip_id" do
+        it "responds with a bad request (404) status given a bad trip_id" do
           post "api/trips/-1/locations", { auth_token: @token }.merge(attrs)
-          expect(response.response_code).to eq 403
+          expect(response.response_code).to eq 404
         end
       end
     end
@@ -126,7 +126,7 @@ describe 'Sally::Locations' do
 
         it "returns an error when attempting to delete a non-existant location" do
           delete "api/trips/#{@trip.id}/locations/#{@new_location.id + 1}", { auth_token: @token }
-          expect(response.response_code).to eq(403)
+          expect(response.response_code).to eq(404)
         end
 
         it "does not delete another user's locations" do
@@ -137,7 +137,7 @@ describe 'Sally::Locations' do
             delete "api/trips/#{@trip.id}/locations/#{location.id}", { auth_token: @token }
           end.to_not change(Location, :count)
 
-          expect(response.response_code).to eq(403)
+          expect(response.response_code).to eq(404)
         end
       end
     end
