@@ -30,9 +30,12 @@
   <% end %>
 </div>
 
-<h3>Remove Account</h3>
+<div class="panel">
+  <h3>Remove Account</h3>
 
-<p>Don't want your account anymore? No problem. <%= button_to "Remove!", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete,
-  form_class: 'danger', class: 'button small' %></p>
+  <p>Don't want your account anymore? No problem. <%= button_to "Remove!", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete,
+    form_class: 'danger', class: 'button small' %>
+  </p>
+</div>
 
-<%= link_to "Back", :back %>
+<%= link_to "Back", :back, class: 'button secondary small' %>
