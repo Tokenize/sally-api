@@ -50,10 +50,10 @@ module Sally
       put ":id" do
         trip = current_user.trips.find(trip_params[:id])
 
-        trip.name = trip_params[:name] unless trip_params[:name].blank?
-        trip.description = trip_params[:description] unless trip_params[:description].blank?
-        trip.start_at = trip_params[:start_at] unless trip_params[:start_at].blank?
-        trip.end_at = trip_params[:end_at] unless trip_params[:end_at].blank?
+        trip.name = trip_params[:name] if trip_params.has_key?(:name)
+        trip.description = trip_params[:description] if trip_params.has_key?(:description)
+        trip.start_at = trip_params[:start_at] if trip_params.has_key?(:start_at)
+        trip.end_at = trip_params[:end_at] if trip_params.has_key?(:end_at)
 
         trip.save!
 

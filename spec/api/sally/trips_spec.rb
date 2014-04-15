@@ -113,6 +113,13 @@ describe 'Sally::Trips' do
           expect(@trip.name).to_not eq(attrs[:name])
           expect(@trip.end_at).to_not eq(attrs[:end_at])
         end
+
+        it "should populate the 'error' element" do
+          put "api/trips/#{@trip.id}", { auth_token: @token, name: nil }
+
+          body = JSON.parse(response.body)
+          expect(body['error']).to_not be_blank
+        end
       end
     end
 
