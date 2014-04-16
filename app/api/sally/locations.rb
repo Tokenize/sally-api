@@ -49,10 +49,10 @@ module Sally
         trip = current_user.trips.find(params[:trip_id])
         location = trip.locations.find(location_params[:id])
 
-        location.latitude = location_params[:latitude] unless location_params[:latitude].blank?
-        location.longitude = location_params[:longitude] unless location_params[:longitude].blank?
-        location.direction = location_params[:direction] unless location_params[:direction].blank?
-        location.speed = location_params[:speed] unless location_params[:speed].blank?
+        location.latitude = location_params[:latitude] if location_params.has_key?(:latitude)
+        location.longitude = location_params[:longitude] if location_params.has_key?(:longitude)
+        location.direction = location_params[:direction] if location_params.has_key?(:direction)
+        location.speed = location_params[:speed] if location_params.has_key?(:speed)
 
         location.save!
         location

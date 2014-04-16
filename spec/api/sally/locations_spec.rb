@@ -90,6 +90,13 @@ describe 'Sally::Locations' do
 
           expect(@location2.latitude).to_not eq(attrs[:latitude])
         end
+
+        it "returns an error if validations fail" do
+          put "api/trips/#{@trip.id}/locations/#{@location2.id}", { auth_token: @token, latitude: nil }
+
+          body = JSON.parse(response.body)
+          expect(body['error']).to_not be_blank
+        end
       end
     end
 
