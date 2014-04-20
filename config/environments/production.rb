@@ -70,8 +70,8 @@ SallyApi::Application.configure do
     :port => 587,
     :domain => "tokenize.ca",
     :authentication => :login,
-    :user_name => ENV['SALLY_SENDGRID_USERNAME'],
-    :password => ENV['SALLY_SENDGRID_PASSWORD'],
+    :user_name => Rails.application.secrets.sendgrid_username,
+    :password => Rails.application.secrets.sendgrid_password,
     :enable_starttls_auto => true
   }
 

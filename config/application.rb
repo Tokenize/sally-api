@@ -66,10 +66,5 @@ module SallyApi
 
     config.paths.add "app/api", glob: "**/*.rb"
     config.autoload_paths += Dir["#{Rails.root}/app/api/*"]
-
-    # Load any configuration entries from application.yml if the file exists.
-    if File.exists?(File.expand_path('../application.yml', __FILE__))
-      ENV.update(YAML.load(File.read(File.expand_path('../application.yml', __FILE__))))
-    end
   end
 end
