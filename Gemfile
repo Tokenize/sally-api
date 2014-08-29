@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '4.1.0'
+gem 'rails', '4.1.5'
 gem 'grape', '~> 0.6.1'
 gem 'pg'
 gem 'devise', '~> 3.0.0'
