@@ -18,4 +18,33 @@ describe 'Sally::Users' do
       expect(response.body).to match(/invalid email or password/i)
     end
   end
+
+  describe "GET user" do
+    context "success" do
+      before(:each) do
+        @user = create(:user)
+        @token = @user.authentication_token
+      end
+
+      it "returns the authenticated user" do
+        get 'api/user', { auth_token: @token }
+
+        json_response = JSON.parse(response.body)
+
+        expect(response).to be_success
+
+        %w(first_name last_name email).each do |key|
+          expect(json_response).to have_key(key)
+        end
+      end
+    end
+
+    context "failure" do
+      it "returns a 401 error" do
+        get 'api/user', { auth_token: 'invalid' }
+
+        expect(response.response_code).to be(401)
+      end
+    end
+  end
 end
